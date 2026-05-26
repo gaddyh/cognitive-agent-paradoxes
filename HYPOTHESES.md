@@ -10,9 +10,8 @@
 > of plan, that change is recorded in a *new*, dated `AMENDMENTS.md` entry explaining
 > what changed and why — the original prediction stays visible.
 >
-> Commit hash of registration: `[FILL: git hash of the commit that adds this file,
-> recorded before the first run]`
-> Date of registration: `[FILL: YYYY-MM-DD]`
+> Commit hash of registration: `22ca00c27eac14b233a1a524fe1a4ccb7499e031`
+> Date of registration: `2026-05-27`
 
 ---
 
