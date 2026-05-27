@@ -12,7 +12,9 @@ dependencies = [
     "rich>=13.0",
     "openai>=1.0",
     "python-dotenv",
-    "dspy-ai>=2.0"
+    "dspy-ai>=2.0",
+    "langgraph>=0.2",
+    "mlflow>=2.0"
 ]
 
 [project.optional-dependencies]

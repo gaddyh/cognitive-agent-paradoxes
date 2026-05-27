@@ -27,3 +27,7 @@ build/
 .cursor/
 
 external/
+
+# MLflow
+mlruns/
+mlflow.db
