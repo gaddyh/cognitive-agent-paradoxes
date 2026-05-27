@@ -25,3 +25,5 @@ build/
 .vscode/
 .idea/
 .cursor/
+
+external/

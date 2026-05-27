@@ -1,3 +1,0 @@
-[submodule "external/tau2-bench-verified"]
-	path = external/tau2-bench-verified
-	url = https://github.com/amazon-agi/tau2-bench-verified
