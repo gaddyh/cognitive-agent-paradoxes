@@ -27,14 +27,14 @@ This edit is **not committed** to the submodule. To reproduce, apply it manually
 
 ## Results
 
-| Run   | Score | Notes                 |
-| ----- | ----- | --------------------- |
-| Run 1 | FILL  | LLM calls made        |
-| Run 2 | FILL  | All calls from cache  |
+| Run   | Score  | Notes                |
+| ----- | ------ | -------------------- |
+| Run 1 | 0.7632 | LLM calls made       |
+| Run 2 | 0.7632 | All calls from cache |
 
-**Deterministic:** FILL (yes/no)
+**Deterministic:** yes
 
-Results file: `gate_b_run.json`
+Results files: `llm_agent_run.json` (run 1), `llm_agent_run_2.json` (run 2)
 
 ## Reproduction commands
 
@@ -55,7 +55,7 @@ python -m src.baseline.run --out gate_b_run_2
 
 ## Gate B status
 
-- [ ] Smoke test passes
-- [ ] Full run completes
-- [ ] Re-run produces identical score
-- [ ] Gate B frozen (this file + gate_b_run.json committed)
+- [x] Smoke test passes
+- [x] Full run completes
+- [x] Re-run produces identical score
+- [x] Gate B frozen (this file + llm_agent_run.json committed)
