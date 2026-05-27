@@ -1,8 +1,5 @@
 """
-Gate B baseline runner — stock llm_agent on tau2-verified retail.
-
-Uses tau2's unmodified LLMAgent (registered as "llm_agent").
-Do NOT register any custom agent here.
+Baseline runner — runs any registered agent on tau2-verified retail.
 
 Prereqs:
   - Redis running: brew services start redis
@@ -10,8 +7,10 @@ Prereqs:
   - OPENAI_API_KEY set in .env
 
 Usage:
-  python -m src.baseline.run               # full base split, 3 trials
-  python -m src.baseline.run --smoke       # 5 tasks, 1 trial (sanity check)
+  python -m src.baseline.run                             # llm_agent, base split, 3 trials
+  python -m src.baseline.run --agent my_llm_agent        # custom registered agent
+  python -m src.baseline.run --smoke                     # 5 tasks, 1 trial (sanity check)
+  python -m src.baseline.run --agent my_llm_agent --smoke
 """
 
 import argparse
@@ -19,6 +18,7 @@ import json
 import sys
 from pathlib import Path
 
+import src.agents  # noqa: F401 — side-effect: registers all custom agents
 from tau2.data_model.simulation import RunConfig
 from tau2.run import run_domain
 
@@ -37,6 +37,12 @@ def main() -> None:
         help="Smoke test: 5 tasks, 1 trial only",
     )
     parser.add_argument(
+        "--agent",
+        type=str,
+        default="llm_agent",
+        help="Registered agent name (default: llm_agent)",
+    )
+    parser.add_argument(
         "--out",
         type=str,
         default=None,
@@ -44,20 +50,22 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    agent_name = args.agent
+
     if args.smoke:
         num_tasks = 5
         num_trials = 1
-        out_name = args.out or "gate_b_smoke"
+        out_name = args.out or f"{agent_name}_smoke"
     else:
         num_tasks = None
         num_trials = 3
-        out_name = args.out or "gate_b_run"
+        out_name = args.out or f"{agent_name}_run"
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
     config = RunConfig(
         domain="retail",
-        agent="llm_agent",
+        agent=agent_name,
         llm_agent=AGENT_LLM,
         llm_args_agent={"temperature": 0.0},
         user="user_simulator",
@@ -70,7 +78,7 @@ def main() -> None:
         log_level="INFO",
     )
 
-    print(f"[baseline] domain=retail  agent=llm_agent  llm={AGENT_LLM}  trials={num_trials}  seed={SEED}")
+    print(f"[baseline] domain=retail  agent={agent_name}  llm={AGENT_LLM}  trials={num_trials}  seed={SEED}")
     results = run_domain(config)
 
     out_path = REPORTS_DIR / f"{out_name}.json"
@@ -78,6 +86,7 @@ def main() -> None:
     print(f"[baseline] saved → {out_path}")
 
     summary = {
+        "agent": agent_name,
         "agent_llm": AGENT_LLM,
         "user_llm": USER_LLM,
         "num_trials": num_trials,
